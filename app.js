@@ -10,16 +10,60 @@ if (typeof __metadata !== "function") __metadata = function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var angular2_1 = require('angular2/angular2');
+var WeatherCard = (function () {
+    function WeatherCard() {
+        this.hourly = {};
+    }
+    WeatherCard.prototype.celsius = function () {
+        return this.hourly.main.celsius;
+    };
+    WeatherCard.prototype.time = function () {
+        return this.hourly.dt_txt;
+    };
+    WeatherCard = __decorate([
+        angular2_1.Component({
+            selector: 'weather-card',
+            properties: {
+                hourly: 'hourly'
+            }
+        }),
+        angular2_1.View({
+            template: "\n    <div>\n      <span>Time: {{time()}}</span>\n      <span>C: {{celsius()}}</span>\n    </div>\n  "
+        }), 
+        __metadata('design:paramtypes', [])
+    ], WeatherCard);
+    return WeatherCard;
+})();
 var HelloComponent = (function () {
     function HelloComponent() {
         this.hello = '34ddd5';
+        this.url = 'http://api.openweathermap.org/data/2.5/forecast?lat=35&lon=139';
+        this.getWeather();
     }
+    HelloComponent.prototype.getWeather = function () {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open('GET', this.url, false);
+        xmlHttp.send(null);
+        var weatherData = JSON.parse(xmlHttp.responseText);
+        this.cityName = weatherData.city.name;
+        this.weatherList = weatherData.list;
+        this.weatherList.forEach(function (item) {
+            var main = item.main;
+            var celsius = '' + (parseFloat(main.temp) - 273.15);
+            var index = celsius.indexOf('.');
+            if (index !== -1) {
+                celsius = celsius.substring(0, index + 2);
+            }
+            main.celsius = celsius;
+        });
+    };
     HelloComponent = __decorate([
         angular2_1.Component({
             selector: 'hello'
         }),
         angular2_1.View({
-            template: '<div> {{hello}} </div>'
+            template: "\n    <div>\n      <div> {{cityName}}  </div>\n      <div *for=\"var item of weatherList\">\n      <weather-card [hourly]=\"item\"></weather-card>\n      </div>\n    </div>\n  ",
+            directives: [angular2_1.For, WeatherCard]
         }), 
         __metadata('design:paramtypes', [])
     ], HelloComponent);

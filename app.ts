@@ -1,10 +1,18 @@
 import {Component, For, View, bootstrap} from 'angular2/angular2';
 
 @Component({
-  selector: 'weather-card'
+  selector: 'weather-card',
+  properties: {
+    hourly: 'hourly'
+  }
 })
 @View({
-  template: '<div>a</div>'
+  template: `
+    <div>
+      <span>Time: {{time()}}</span>
+      <span>C: {{celsius()}}</span>
+    </div>
+  `
 })
 class WeatherCard {
   hourly: any;
@@ -13,10 +21,14 @@ class WeatherCard {
     this.hourly = {};
   }
 
-  //yo() {
-  //  debugger;
-  //  return this.hourly.main.celsius;
-  //}
+  celsius() {
+    //debugger;
+    return this.hourly.main.celsius;
+  }
+
+  time() {
+    return this.hourly.dt_txt;
+  }
 }
 
 
@@ -28,7 +40,7 @@ class WeatherCard {
     <div>
       <div> {{cityName}}  </div>
       <div *for="var item of weatherList">
-      <weather-card></weather-card>
+      <weather-card [hourly]="item"></weather-card>
       </div>
     </div>
   `,
@@ -58,8 +70,17 @@ class HelloComponent {
 
     this.weatherList.forEach(item => {
       // Temperature, Kelvin (subtract 273.15 to convert to Celsius)
-      item.main.celsius = parseFloat(item.main.temp) - 273.15;
-      console.log('item.main.celsius', item.main.celsius);
+      var main = item.main;
+
+      var celsius = '' + (parseFloat(main.temp) - 273.15);
+
+      // Get one digit after the decimal point.
+      var index = celsius.indexOf('.');
+      if (index !== -1) {
+        celsius = celsius.substring(0, index + 2);
+      }
+
+      main.celsius = celsius;
     });
   }
 }
