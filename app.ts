@@ -1,6 +1,26 @@
 import {Component, For, View, bootstrap} from 'angular2/angular2';
 
 @Component({
+  selector: 'weather-card'
+})
+@View({
+  template: '<div>a</div>'
+})
+class WeatherCard {
+  hourly: any;
+
+  constructor() {
+    this.hourly = {};
+  }
+
+  //yo() {
+  //  debugger;
+  //  return this.hourly.main.celsius;
+  //}
+}
+
+
+@Component({
   selector: 'hello'
 })
 @View({
@@ -8,11 +28,11 @@ import {Component, For, View, bootstrap} from 'angular2/angular2';
     <div>
       <div> {{cityName}}  </div>
       <div *for="var item of weatherList">
-        {{item.main.celsius}}
+      <weather-card></weather-card>
       </div>
     </div>
   `,
-  directives: [For]
+  directives: [For, WeatherCard]
 })
 class HelloComponent {
   hello: string;
@@ -34,13 +54,10 @@ class HelloComponent {
     var weatherData = JSON.parse(xmlHttp.responseText);
 
     this.cityName = weatherData.city.name;
-
-    debugger;
     this.weatherList = weatherData.list;
 
     this.weatherList.forEach(item => {
       // Temperature, Kelvin (subtract 273.15 to convert to Celsius)
-      debugger;
       item.main.celsius = parseFloat(item.main.temp) - 273.15;
       console.log('item.main.celsius', item.main.celsius);
     });
