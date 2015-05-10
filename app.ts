@@ -1,4 +1,4 @@
-import {Component, For, View, bootstrap} from 'angular2/angular2';
+import {Component, If, For, View, bootstrap} from 'angular2/angular2';
 
 @Component({
   selector: 'city-selector'
@@ -7,8 +7,10 @@ import {Component, For, View, bootstrap} from 'angular2/angular2';
   template: `
     <div class="city-selector">
       Choose a city: {{currentCity}}
-      <select name="city" id="city" class="form-control">
-        <option *for="var city of cities">{{city}}</option>
+      <select name="city" id="city" class="form-control"
+          (change)="cityChanged($event)">
+        <option *for="var city of cities"
+            [selected]="city == currentCity">{{city}}</option>
       </select>
     </div>
   `,
@@ -28,6 +30,10 @@ class CitySelector {
       'Tokyo'
     ];
     this.currentCity = 'New York';
+  }
+
+  cityChanged(event) {
+    this.currentCity = event.target.value;
   }
 }
 

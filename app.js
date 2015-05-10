@@ -22,12 +22,15 @@ var CitySelector = (function () {
         ];
         this.currentCity = 'New York';
     }
+    CitySelector.prototype.cityChanged = function (event) {
+        this.currentCity = event.target.value;
+    };
     CitySelector = __decorate([
         angular2_1.Component({
             selector: 'city-selector'
         }),
         angular2_1.View({
-            template: "\n    <div class=\"city-selector\">\n      Choose a city: {{currentCity}}\n      <select name=\"city\" id=\"city\" class=\"form-control\">\n        <option *for=\"var city of cities\">{{city}}</option>\n      </select>\n    </div>\n  ",
+            template: "\n    <div class=\"city-selector\">\n      Choose a city: {{currentCity}}\n      <select name=\"city\" id=\"city\" class=\"form-control\"\n          (change)=\"cityChanged($event)\">\n        <option *for=\"var city of cities\"\n            [selected]=\"city == currentCity\">{{city}}</option>\n      </select>\n    </div>\n  ",
             directives: [angular2_1.For]
         }), 
         __metadata('design:paramtypes', [])
