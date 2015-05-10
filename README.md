@@ -33,4 +33,4 @@ Starting up http-server, serving ./ on: http://0.0.0.0:8080
 Hit CTRL-C to stop the server
 ```
 
-Go to http://localhost:8080/
+Go to [http://localhost:8080/](http://localhost:8080/)
