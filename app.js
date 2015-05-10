@@ -61,13 +61,13 @@ var WeatherCard = (function () {
     ], WeatherCard);
     return WeatherCard;
 })();
-var HelloComponent = (function () {
-    function HelloComponent() {
+var WeatherApp = (function () {
+    function WeatherApp() {
         this.hello = '34ddd5';
         this.url = 'http://api.openweathermap.org/data/2.5/forecast?lat=35&lon=139';
         this.getWeather();
     }
-    HelloComponent.prototype.getWeather = function () {
+    WeatherApp.prototype.getWeather = function () {
         return;
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open('GET', this.url, false);
@@ -85,7 +85,7 @@ var HelloComponent = (function () {
             main.celsius = celsius;
         });
     };
-    HelloComponent = __decorate([
+    WeatherApp = __decorate([
         angular2_1.Component({
             selector: 'weather-app'
         }),
@@ -94,7 +94,7 @@ var HelloComponent = (function () {
             directives: [CitySelector, angular2_1.For, WeatherCard]
         }), 
         __metadata('design:paramtypes', [])
-    ], HelloComponent);
-    return HelloComponent;
+    ], WeatherApp);
+    return WeatherApp;
 })();
-angular2_1.bootstrap(HelloComponent);
+angular2_1.bootstrap(WeatherApp);

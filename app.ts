@@ -84,7 +84,7 @@ class WeatherCard {
   `,
   directives: [CitySelector, For, WeatherCard]
 })
-class HelloComponent {
+class WeatherApp {
   hello: string;
   url: string;
   weatherList: any[];
@@ -124,4 +124,4 @@ class HelloComponent {
   }
 }
 
-bootstrap(HelloComponent);
+bootstrap(WeatherApp);
