@@ -10,6 +10,30 @@ if (typeof __metadata !== "function") __metadata = function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var angular2_1 = require('angular2/angular2');
+var CitySelector = (function () {
+    function CitySelector() {
+        this.cities = [
+            'Berlin',
+            'Buenos Aires',
+            'Cairo',
+            'New York',
+            'Sydney',
+            'Tokyo'
+        ];
+        this.currentCity = 'New York';
+    }
+    CitySelector = __decorate([
+        angular2_1.Component({
+            selector: 'city-selector'
+        }),
+        angular2_1.View({
+            template: "\n    <div class=\"city-selector\">\n      Choose a city: {{currentCity}}\n      <select name=\"city\" id=\"city\" class=\"form-control\">\n        <option *for=\"var city of cities\">{{city}}</option>\n      </select>\n    </div>\n  ",
+            directives: [angular2_1.For]
+        }), 
+        __metadata('design:paramtypes', [])
+    ], CitySelector);
+    return CitySelector;
+})();
 var WeatherCard = (function () {
     function WeatherCard() {
         this.hourly = {};
@@ -41,6 +65,7 @@ var HelloComponent = (function () {
         this.getWeather();
     }
     HelloComponent.prototype.getWeather = function () {
+        return;
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open('GET', this.url, false);
         xmlHttp.send(null);
@@ -59,11 +84,11 @@ var HelloComponent = (function () {
     };
     HelloComponent = __decorate([
         angular2_1.Component({
-            selector: 'hello'
+            selector: 'weather-app'
         }),
         angular2_1.View({
-            template: "\n    <div>\n      <div> {{cityName}}  </div>\n      <div *for=\"var item of weatherList\">\n      <weather-card [hourly]=\"item\"></weather-card>\n      </div>\n    </div>\n  ",
-            directives: [angular2_1.For, WeatherCard]
+            template: "\n    <div>\n      <div> {{cityName}}  </div>\n      <city-selector></city-selector>\n      <div *for=\"var item of weatherList\">\n      <weather-card [hourly]=\"item\"></weather-card>\n      </div>\n    </div>\n  ",
+            directives: [CitySelector, angular2_1.For, WeatherCard]
         }), 
         __metadata('design:paramtypes', [])
     ], HelloComponent);

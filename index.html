@@ -1,17 +1,31 @@
 <html>
-  
-  <head>
-    <title>Angular2 meme application</title>
-    <!--<script src="https://github.jspm.io/jmcriffey/bower-traceur-runtime@0.0.87/traceur-runtime.js"></script>-->
-    <!--<script src="https://jspm.io/system@0.16.js"></script>-->
-    <!--<script src="https://code.angularjs.org/2.0.0-alpha.22/angular2.dev.js"></script>-->
-    <script src="libs/traceur-runtime.js"></script>
-    <script src="libs/system@0.16.7.js"></script>
-    <script src="libs/angular2.dev.js"></script>
-  </head>
-  
-  <body>
-    <hello></hello>
-    <script>System.import('app');</script>
-  </body>
+
+<head>
+  <title>Angular2 meme application</title>
+  <!--<script src="https://github.jspm.io/jmcriffey/bower-traceur-runtime@0.0.87/traceur-runtime.js"></script>-->
+  <!--<script src="https://jspm.io/system@0.16.js"></script>-->
+  <!--<script src="https://code.angularjs.org/2.0.0-alpha.22/angular2.dev.js"></script>-->
+  <script src="libs/traceur-runtime.js"></script>
+  <script src="libs/system@0.16.7.js"></script>
+  <script src="libs/angular2.dev.js"></script>
+  <link rel="stylesheet" href="libs/bootstrap.min.css"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+
+<body class="container">
+<div>
+  <h1>Angular2 weather app</h1>
+
+  <p>
+    This is a small weather application written in Angular 2. It uses the
+    <a href="http://openweathermap.org/">OpenWeatherMap API</a> to fetch weather
+    data.
+  </p>
+
+  <weather-app></weather-app>
+
+</div>
+
+<script>System.import('app');</script>
+</body>
 </html>

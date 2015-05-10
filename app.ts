@@ -1,6 +1,37 @@
 import {Component, For, View, bootstrap} from 'angular2/angular2';
 
 @Component({
+  selector: 'city-selector'
+})
+@View({
+  template: `
+    <div class="city-selector">
+      Choose a city: {{currentCity}}
+      <select name="city" id="city" class="form-control">
+        <option *for="var city of cities">{{city}}</option>
+      </select>
+    </div>
+  `,
+  directives: [For]
+})
+class CitySelector {
+  cities: string[];
+  currentCity: string;
+
+  constructor() {
+    this.cities = [
+      'Berlin',
+      'Buenos Aires',
+      'Cairo',
+      'New York',
+      'Sydney',
+      'Tokyo'
+    ];
+    this.currentCity = 'New York';
+  }
+}
+
+@Component({
   selector: 'weather-card',
   properties: {
     hourly: 'hourly'
@@ -33,18 +64,19 @@ class WeatherCard {
 
 
 @Component({
-  selector: 'hello'
+  selector: 'weather-app'
 })
 @View({
   template: `
     <div>
       <div> {{cityName}}  </div>
+      <city-selector></city-selector>
       <div *for="var item of weatherList">
       <weather-card [hourly]="item"></weather-card>
       </div>
     </div>
   `,
-  directives: [For, WeatherCard]
+  directives: [CitySelector, For, WeatherCard]
 })
 class HelloComponent {
   hello: string;
@@ -59,6 +91,7 @@ class HelloComponent {
   }
 
   getWeather() {
+    return;
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open('GET', this.url, false);
     xmlHttp.send(null);
