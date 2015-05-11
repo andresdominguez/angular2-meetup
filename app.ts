@@ -64,10 +64,22 @@ class WeatherCard {
   }
 
   time() {
-    return this.hourly.dt_txt;
+    return this.hourly.dateTime.dt
   }
 }
 
+class DateAndTime {
+  localDate: string;
+  localTime: string;
+  dt: string;
+
+  constructor(utcDate: string) {
+    var date = new Date(utcDate + ' UTC');
+    this.localDate = date.toLocaleDateString();
+    this.localTime = date.toLocaleTimeString();
+    this.dt = this.localDate + ' ' + this.localTime;
+  }
+}
 
 @Component({
   selector: 'weather-app'
@@ -96,8 +108,25 @@ class WeatherApp {
     this.getWeather();
   }
 
+  toCelsius(kelvin: string): string {
+    // Temperature, Kelvin (subtract 273.15 to convert to Celsius)
+    var celsius = '' + (parseFloat(kelvin) - 273.15);
+
+    // Get one digit after the decimal point.
+    var index = celsius.indexOf('.');
+    if (index !== -1) {
+      celsius = celsius.substring(0, index + 2);
+    }
+
+    return celsius;
+  }
+
+  toLocalDateTime(utcDateTime: string): string {
+    var date = new Date(utcDateTime + ' UTC');
+    return date.toLocaleDateString() + ' -> ' + date.toLocaleTimeString();
+  }
+
   getWeather() {
-    return;
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open('GET', this.url, false);
     xmlHttp.send(null);
@@ -108,18 +137,8 @@ class WeatherApp {
     this.weatherList = weatherData.list;
 
     this.weatherList.forEach(item => {
-      // Temperature, Kelvin (subtract 273.15 to convert to Celsius)
-      var main = item.main;
-
-      var celsius = '' + (parseFloat(main.temp) - 273.15);
-
-      // Get one digit after the decimal point.
-      var index = celsius.indexOf('.');
-      if (index !== -1) {
-        celsius = celsius.substring(0, index + 2);
-      }
-
-      main.celsius = celsius;
+      item.main.celsius = this.toCelsius(item.main.temp);
+      item.dateTime = new DateAndTime(item.dt_txt);
     });
   }
 }

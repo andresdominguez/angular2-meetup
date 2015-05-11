@@ -45,7 +45,7 @@ var WeatherCard = (function () {
         return this.hourly.main.celsius;
     };
     WeatherCard.prototype.time = function () {
-        return this.hourly.dt_txt;
+        return this.hourly.dateTime.dt;
     };
     WeatherCard = __decorate([
         angular2_1.Component({
@@ -61,14 +61,35 @@ var WeatherCard = (function () {
     ], WeatherCard);
     return WeatherCard;
 })();
+var DateAndTime = (function () {
+    function DateAndTime(utcDate) {
+        var date = new Date(utcDate + ' UTC');
+        this.localDate = date.toLocaleDateString();
+        this.localTime = date.toLocaleTimeString();
+        this.dt = this.localDate + ' ' + this.localTime;
+    }
+    return DateAndTime;
+})();
 var WeatherApp = (function () {
     function WeatherApp() {
         this.hello = '34ddd5';
         this.url = 'http://api.openweathermap.org/data/2.5/forecast?lat=35&lon=139';
         this.getWeather();
     }
+    WeatherApp.prototype.toCelsius = function (kelvin) {
+        var celsius = '' + (parseFloat(kelvin) - 273.15);
+        var index = celsius.indexOf('.');
+        if (index !== -1) {
+            celsius = celsius.substring(0, index + 2);
+        }
+        return celsius;
+    };
+    WeatherApp.prototype.toLocalDateTime = function (utcDateTime) {
+        var date = new Date(utcDateTime + ' UTC');
+        return date.toLocaleDateString() + ' -> ' + date.toLocaleTimeString();
+    };
     WeatherApp.prototype.getWeather = function () {
-        return;
+        var _this = this;
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open('GET', this.url, false);
         xmlHttp.send(null);
@@ -76,13 +97,8 @@ var WeatherApp = (function () {
         this.cityName = weatherData.city.name;
         this.weatherList = weatherData.list;
         this.weatherList.forEach(function (item) {
-            var main = item.main;
-            var celsius = '' + (parseFloat(main.temp) - 273.15);
-            var index = celsius.indexOf('.');
-            if (index !== -1) {
-                celsius = celsius.substring(0, index + 2);
-            }
-            main.celsius = celsius;
+            item.main.celsius = _this.toCelsius(item.main.temp);
+            item.dateTime = new DateAndTime(item.dt_txt);
         });
     };
     WeatherApp = __decorate([
