@@ -602,6 +602,12 @@ declare module "angular2/angular2" {
    *
    */
  function Switch(): void;
+
+  /**
+   *
+   *
+   */
+  function EventEmitter(): void;
 }
 
 declare module "angular2/di" {
