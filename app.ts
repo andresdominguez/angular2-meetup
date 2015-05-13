@@ -1,5 +1,12 @@
 import {Component,EventEmitter, For, If, View, bootstrap} from 'angular2/angular2';
 
+interface HourlyForecast {
+  c: string,
+  f: string,
+  time: string,
+  day: string
+}
+
 @Component({
   selector: 'city-selector',
   events: ['cityselected']
@@ -50,35 +57,23 @@ class CitySelector {
 @View({
   template: `
     <div>
-      <div>C: {{celsius()}}</div>
-      <div>F: {{fahrenheit()}}</div>
-      <div>Time: {{time()}}</div>
+      <div>C: hourly.c</div>
+      <div>F: hourly.f</div>
+      <div>{{hourly.day}} {{hourly.time}}</div>
     </div>
   `
 })
 class WeatherCard {
-  hourly: any;
-
-  constructor() {
-    this.hourly = {};
-  }
-
-  celsius() {
-    return this.hourly.myTemp.c;
-  }
-
-  fahrenheit() {
-    return this.hourly.myTemp.f;
-  }
-
-  time() {
-    return this.hourly.dateTime.dt
-  }
+  hourly: HourlyForecast;
+  constructor() {}
 }
 
 class DateAndTime {
+  static dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
   localDate: string;
   localTime: string;
+  day: string;
   dt: string;
 
   constructor(utcDate: string) {
@@ -86,6 +81,7 @@ class DateAndTime {
     this.localDate = date.toLocaleDateString();
     this.localTime = date.toLocaleTimeString();
     this.dt = this.localDate + ' ' + this.localTime;
+    this.day = DateAndTime.dayNames[date.getDay()];
   }
 }
 
@@ -107,7 +103,7 @@ class DateAndTime {
 class WeatherApp {
   hello: string;
   url: string;
-  weatherList: any[];
+  weatherList: HourlyForecast[];
   cityName: string;
 
   constructor() {
@@ -155,14 +151,17 @@ class WeatherApp {
 
   handleResponse(weatherData: any) {
     this.cityName = weatherData.city.name;
-    this.weatherList = weatherData.list;
 
-    this.weatherList.forEach(item => {
-      item.myTemp = {};
+    this.weatherList = weatherData.list.map(item => {
+      var c = this.toCelsius(item.main.temp);
+      var dateAndTime = new DateAndTime(item.dt_txt);
 
-      item.myTemp.c = this.toCelsius(item.main.temp);
-      item.myTemp.f = this.toFahrenheit(item.myTemp.c);
-      item.dateTime = new DateAndTime(item.dt_txt);
+      return {
+        c: c,
+        f: this.toFahrenheit(c),
+        day: dateAndTime.day,
+        time: dateAndTime.localTime
+      };
     });
   }
 }

@@ -42,17 +42,7 @@ var CitySelector = (function () {
 })();
 var WeatherCard = (function () {
     function WeatherCard() {
-        this.hourly = {};
     }
-    WeatherCard.prototype.celsius = function () {
-        return this.hourly.myTemp.c;
-    };
-    WeatherCard.prototype.fahrenheit = function () {
-        return this.hourly.myTemp.f;
-    };
-    WeatherCard.prototype.time = function () {
-        return this.hourly.dateTime.dt;
-    };
     WeatherCard = __decorate([
         angular2_1.Component({
             selector: 'weather-card',
@@ -61,7 +51,7 @@ var WeatherCard = (function () {
             }
         }),
         angular2_1.View({
-            template: "\n    <div>\n      <div>C: {{celsius()}}</div>\n      <div>F: {{fahrenheit()}}</div>\n      <div>Time: {{time()}}</div>\n    </div>\n  "
+            template: "\n    <div>\n      <div>C: hourly.c</div>\n      <div>F: hourly.f</div>\n      <div>{{hourly.day}} {{hourly.time}}</div>\n    </div>\n  "
         }), 
         __metadata('design:paramtypes', [])
     ], WeatherCard);
@@ -73,7 +63,9 @@ var DateAndTime = (function () {
         this.localDate = date.toLocaleDateString();
         this.localTime = date.toLocaleTimeString();
         this.dt = this.localDate + ' ' + this.localTime;
+        this.day = DateAndTime.dayNames[date.getDay()];
     }
+    DateAndTime.dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     return DateAndTime;
 })();
 var WeatherApp = (function () {
@@ -114,12 +106,15 @@ var WeatherApp = (function () {
     WeatherApp.prototype.handleResponse = function (weatherData) {
         var _this = this;
         this.cityName = weatherData.city.name;
-        this.weatherList = weatherData.list;
-        this.weatherList.forEach(function (item) {
-            item.myTemp = {};
-            item.myTemp.c = _this.toCelsius(item.main.temp);
-            item.myTemp.f = _this.toFahrenheit(item.myTemp.c);
-            item.dateTime = new DateAndTime(item.dt_txt);
+        this.weatherList = weatherData.list.map(function (item) {
+            var c = _this.toCelsius(item.main.temp);
+            var dateAndTime = new DateAndTime(item.dt_txt);
+            return {
+                c: c,
+                f: _this.toFahrenheit(c),
+                day: dateAndTime.day,
+                time: dateAndTime.localTime
+            };
         });
     };
     WeatherApp = __decorate([
