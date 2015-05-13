@@ -49,9 +49,10 @@ class CitySelector {
 })
 @View({
   template: `
-    <div class="hour-card col-md-1">
-      <div class="col-md-1">C: {{celsius()}}</div>
-      <div class="col-md-1">Time: {{time()}}</div>
+    <div>
+      <div>C: {{celsius()}}</div>
+      <div>F: {{fahrenheit()}}</div>
+      <div>Time: {{time()}}</div>
     </div>
   `
 })
@@ -63,8 +64,11 @@ class WeatherCard {
   }
 
   celsius() {
-    //debugger;
-    return this.hourly.main.celsius;
+    return this.hourly.myTemp.c;
+  }
+
+  fahrenheit() {
+    return this.hourly.myTemp.f;
   }
 
   time() {
@@ -90,11 +94,11 @@ class DateAndTime {
 })
 @View({
   template: `
-    <div>
-      <div> {{cityName}}  </div>
+    <div class="row">
+      <div> {{cityName}} </div>
       <city-selector (cityselected)="cityChanged()"></city-selector>
       <div *for="var item of weatherList">
-      <div class="row"><weather-card [hourly]="item"></weather-card></div>
+        <weather-card [hourly]="item"></weather-card>
       </div>
     </div>
   `,
@@ -113,21 +117,28 @@ class WeatherApp {
   }
 
   cityChanged() {
-    debugger;
     console.log('hola');
+  }
+
+  format(temperature: number): string {
+    var stringValue = '' + temperature;
+    // Get one digit after the decimal point.
+    var index = stringValue.indexOf('.');
+    if (index !== -1) {
+      stringValue = stringValue.substring(0, index + 2);
+    }
+    return stringValue;
   }
 
   toCelsius(kelvin: string): string {
     // Temperature, Kelvin (subtract 273.15 to convert to Celsius)
-    var celsius = '' + (parseFloat(kelvin) - 273.15);
+    var celsius = parseFloat(kelvin) - 273.15;
+    return this.format(celsius);
+  }
 
-    // Get one digit after the decimal point.
-    var index = celsius.indexOf('.');
-    if (index !== -1) {
-      celsius = celsius.substring(0, index + 2);
-    }
-
-    return celsius;
+  toFahrenheit(celsius: string): string {
+    var fahrenheit = (parseFloat(celsius) * 1.8) + 32.0;
+    return this.format(fahrenheit);
   }
 
   getWeather() {
@@ -141,7 +152,10 @@ class WeatherApp {
     this.weatherList = weatherData.list;
 
     this.weatherList.forEach(item => {
-      item.main.celsius = this.toCelsius(item.main.temp);
+      item.myTemp = {};
+
+      item.myTemp.c = this.toCelsius(item.main.temp);
+      item.myTemp.f = this.toFahrenheit(item.myTemp.c);
       item.dateTime = new DateAndTime(item.dt_txt);
     });
   }
