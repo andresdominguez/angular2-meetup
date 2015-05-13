@@ -2,7 +2,7 @@ import {Component,EventEmitter, For, If, View, bootstrap} from 'angular2/angular
 
 @Component({
   selector: 'city-selector',
-  events: ['andres']
+  events: ['cityselected']
 })
 @View({
   template: `
@@ -20,7 +20,7 @@ import {Component,EventEmitter, For, If, View, bootstrap} from 'angular2/angular
 class CitySelector {
   cities: string[];
   currentCity: string;
-  andres: any;
+  cityselected: any;
 
   constructor() {
     this.cities = [
@@ -32,12 +32,12 @@ class CitySelector {
       'Tokyo'
     ];
     this.currentCity = 'New York';
-    this.andres = new EventEmitter();
+    this.cityselected = new EventEmitter();
   }
 
   cityChanged(event) {
     this.currentCity = event.target.value;
-    this.andres.next();
+    this.cityselected.next();
   }
 }
 
@@ -87,7 +87,7 @@ class DateAndTime {
   template: `
     <div>
       <div> {{cityName}}  </div>
-      <city-selector (andres)="cityChanged()"></city-selector>
+      <city-selector (cityselected)="cityChanged()"></city-selector>
       <div *for="var item of weatherList">
       <div class="row"><weather-card [hourly]="item"></weather-card></div>
       </div>
