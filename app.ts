@@ -48,7 +48,12 @@ class CitySelector {
   }
 })
 @View({
-  templateUrl: 'weather-card.html'
+  template: `
+    <div class="hour-card col-md-1">
+      <div class="col-md-1">C: {{celsius()}}</div>
+      <div class="col-md-1">Time: {{time()}}</div>
+    </div>
+  `
 })
 class WeatherCard {
   hourly: any;
