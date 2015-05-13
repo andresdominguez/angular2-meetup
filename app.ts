@@ -1,7 +1,8 @@
-import {Component, If, For, View, bootstrap} from 'angular2/angular2';
+import {Component,EventEmitter, For, If, View, bootstrap} from 'angular2/angular2';
 
 @Component({
-  selector: 'city-selector'
+  selector: 'city-selector',
+  events: ['andres']
 })
 @View({
   template: `
@@ -19,6 +20,7 @@ import {Component, If, For, View, bootstrap} from 'angular2/angular2';
 class CitySelector {
   cities: string[];
   currentCity: string;
+  andres: any;
 
   constructor() {
     this.cities = [
@@ -30,10 +32,12 @@ class CitySelector {
       'Tokyo'
     ];
     this.currentCity = 'New York';
+    this.andres = new EventEmitter();
   }
 
   cityChanged(event) {
     this.currentCity = event.target.value;
+    this.andres.next();
   }
 }
 
@@ -44,12 +48,7 @@ class CitySelector {
   }
 })
 @View({
-  template: `
-    <div>
-      <span>Time: {{time()}}</span>
-      <span>C: {{celsius()}}</span>
-    </div>
-  `
+  templateUrl: 'weather-card.html'
 })
 class WeatherCard {
   hourly: any;
@@ -88,9 +87,9 @@ class DateAndTime {
   template: `
     <div>
       <div> {{cityName}}  </div>
-      <city-selector></city-selector>
+      <city-selector (andres)="cityChanged()"></city-selector>
       <div *for="var item of weatherList">
-      <weather-card [hourly]="item"></weather-card>
+      <div class="row"><weather-card [hourly]="item"></weather-card></div>
       </div>
     </div>
   `,
@@ -108,6 +107,11 @@ class WeatherApp {
     this.getWeather();
   }
 
+  cityChanged() {
+    debugger;
+    console.log('hola');
+  }
+
   toCelsius(kelvin: string): string {
     // Temperature, Kelvin (subtract 273.15 to convert to Celsius)
     var celsius = '' + (parseFloat(kelvin) - 273.15);
@@ -119,11 +123,6 @@ class WeatherApp {
     }
 
     return celsius;
-  }
-
-  toLocalDateTime(utcDateTime: string): string {
-    var date = new Date(utcDateTime + ' UTC');
-    return date.toLocaleDateString() + ' -> ' + date.toLocaleTimeString();
   }
 
   getWeather() {
