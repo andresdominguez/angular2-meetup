@@ -142,12 +142,18 @@ class WeatherApp {
   }
 
   getWeather() {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open('GET', this.url, false);
-    xmlHttp.send(null);
+    var self = this;
+    var request = new XMLHttpRequest();
 
-    var weatherData = JSON.parse(xmlHttp.responseText);
+    request.onload = function handleResponse(response) {
+      var weatherData = JSON.parse(request.responseText);
+      self.handleResponse(weatherData);
+    };
+    request.open('GET', this.url, true);
+    request.send(null);
+  }
 
+  handleResponse(weatherData: any) {
     this.cityName = weatherData.city.name;
     this.weatherList = weatherData.list;
 
