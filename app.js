@@ -60,9 +60,7 @@ var WeatherCard = (function () {
 var DateAndTime = (function () {
     function DateAndTime(utcDate) {
         var date = new Date(utcDate + ' UTC');
-        this.localDate = date.toLocaleDateString();
-        this.localTime = date.toLocaleTimeString();
-        this.dt = this.localDate + ' ' + this.localTime;
+        this.localTime = date.toLocaleTimeString().replace(/:00 /, ' ');
         this.day = DateAndTime.dayNames[date.getDay()];
     }
     DateAndTime.dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];

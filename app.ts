@@ -65,22 +65,21 @@ class CitySelector {
 })
 class WeatherCard {
   hourly: HourlyForecast;
-  constructor() {}
+
+  constructor() {
+  }
 }
 
 class DateAndTime {
   static dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  localDate: string;
   localTime: string;
   day: string;
-  dt: string;
 
   constructor(utcDate: string) {
     var date = new Date(utcDate + ' UTC');
-    this.localDate = date.toLocaleDateString();
-    this.localTime = date.toLocaleTimeString();
-    this.dt = this.localDate + ' ' + this.localTime;
+    // Drop the seconds.
+    this.localTime = date.toLocaleTimeString().replace(/:00 /, ' ');
     this.day = DateAndTime.dayNames[date.getDay()];
   }
 }
