@@ -52,35 +52,35 @@ class CitySelector {
 @Component({
   selector: 'weather-card',
   properties: {
-    hourly: 'hourly'
+    forecast: 'forecast'
   }
 })
 @View({
   template: `
     <div class="weather-card">
-      <div>{{hourly.day}} {{hourly.time}}</div>
+      <div>{{forecast.day}} {{forecast.time}}</div>
       <div>
         <i class="wi" [class.wi-day-cloudy]="isCloudy()"
             [class.wi-day-sunny]="isSunny()">
-          {{hourly.c}}C / {{hourly.f}}F
+          {{forecast.c}}C / {{forecast.f}}F
         </i>
       </div>
     </div>
   `
 })
 class WeatherCard {
-  hourly: HourlyForecast;
+  forecast: HourlyForecast;
 
   constructor() {
-    this.hourly = null;
+    this.forecast = null;
   }
 
   isCloudy(): boolean {
-    return this.hourly.clouds > 30;
+    return this.forecast.clouds > 30;
   }
 
   isSunny(): boolean {
-    return this.hourly.clouds <= 30;
+    return this.forecast.clouds <= 30;
   }
 }
 
@@ -111,7 +111,7 @@ class DateAndTime {
       </div>
       <div class="row">
         <div *for="var item of weatherList" class="col-xs-4">
-          <weather-card [hourly]="item"></weather-card>
+          <weather-card [forecast]="item"></weather-card>
         </div>
       </div>
     </div>
