@@ -12,7 +12,7 @@ obsolete withing a few days (written on May 10th, 2015).
 
 # Slides
 
-Coming soon
+[See the slides](https://docs.google.com/presentation/d/1ruBhy7DC2PmF-r9wHYPxMtkVSMOqIxcIBVR_nkCqJOo/edit?usp=sharing)
 
 # Instructions
 
