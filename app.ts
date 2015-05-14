@@ -1,4 +1,4 @@
-import {Component,EventEmitter, For, If, View, bootstrap} from 'angular2/angular2';
+import {Component, EventEmitter, For, If, View, bootstrap} from 'angular2/angular2';
 
 interface HourlyForecast {
   c: string;
