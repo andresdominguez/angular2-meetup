@@ -123,7 +123,7 @@ class WeatherApp {
   cityName: string;
 
   constructor() {
-    this.url = 'http://api.openweathermap.org/data/2.5/forecast?lat=35&lon=139';
+    this.url = 'http://api.openweathermap.org/data/2.5/forecast?lat=40.7409570&lon=-74.0021190';
     this.getWeather();
   }
 

@@ -8,12 +8,6 @@
   margin-bottom: 10px;
 }
 
-.hour-card {
-  background-color: red;
-  display: inline;
-  /*width: 200px;*/
-}
-
 .weather-card {
   background-color: rgba(0, 185, 11, 0.4);
   margin-bottom: 10px;
@@ -26,5 +20,6 @@
 }
 
 .weather-app-city {
-  margin: 10px;
+  font-weight: bolder;
+  margin: 0 10px 10px 10px;
 }
