@@ -6,6 +6,14 @@ Sample code for the JS meetup
 Angular 2 is under development. The API will change and this repository will be
 obsolete withing a few days (written on May 10th, 2015).
 
+# See this example running:
+
+[http://andresdominguez.github.io/angular2-meetup/](http://andresdominguez.github.io/angular2-meetup/)
+
+# Slides
+
+Coming soon
+
 # Instructions
 
 #### Clone this repository
