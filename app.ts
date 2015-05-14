@@ -106,7 +106,8 @@ class DateAndTime {
     <div class="weather-app">
       <div>
         <div class="weather-app-city">{{cityName}}</div>
-        <city-selector (cityselected)="cityChanged()"></city-selector>
+        <city-selector #city
+            (cityselected)="cityChanged(city.currentCity)"></city-selector>
       </div>
       <div class="row">
         <div *for="var item of weatherList" class="col-xs-4">
@@ -127,7 +128,8 @@ class WeatherApp {
     this.getWeather();
   }
 
-  cityChanged() {
+  cityChanged(currentCity: string) {
+    debugger;
     console.log('hola');
   }
 

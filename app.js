@@ -78,7 +78,8 @@ var WeatherApp = (function () {
         this.url = 'http://api.openweathermap.org/data/2.5/forecast?lat=40.7409570&lon=-74.0021190';
         this.getWeather();
     }
-    WeatherApp.prototype.cityChanged = function () {
+    WeatherApp.prototype.cityChanged = function (currentCity) {
+        debugger;
         console.log('hola');
     };
     WeatherApp.prototype.format = function (temperature) {
@@ -127,7 +128,7 @@ var WeatherApp = (function () {
             selector: 'weather-app'
         }),
         angular2_1.View({
-            template: "\n    <div class=\"weather-app\">\n      <div>\n        <div class=\"weather-app-city\">{{cityName}}</div>\n        <city-selector (cityselected)=\"cityChanged()\"></city-selector>\n      </div>\n      <div class=\"row\">\n        <div *for=\"var item of weatherList\" class=\"col-xs-4\">\n          <weather-card [hourly]=\"item\"></weather-card>\n        </div>\n      </div>\n    </div>\n  ",
+            template: "\n    <div class=\"weather-app\">\n      <div>\n        <div class=\"weather-app-city\">{{cityName}}</div>\n        <city-selector #city\n            (cityselected)=\"cityChanged(city.currentCity)\"></city-selector>\n      </div>\n      <div class=\"row\">\n        <div *for=\"var item of weatherList\" class=\"col-xs-4\">\n          <weather-card [hourly]=\"item\"></weather-card>\n        </div>\n      </div>\n    </div>\n  ",
             directives: [CitySelector, angular2_1.For, WeatherCard]
         }), 
         __metadata('design:paramtypes', [])
