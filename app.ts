@@ -1,11 +1,11 @@
 import {Component,EventEmitter, For, If, View, bootstrap} from 'angular2/angular2';
 
 interface HourlyForecast {
-  c: string,
-  f: string,
-  time: string,
-  day: string,
-  clouds: number
+  c: string;
+  f: string;
+  time: string;
+  day: string;
+  clouds: number;
 }
 
 @Component({
@@ -119,18 +119,17 @@ class DateAndTime {
   directives: [CitySelector, For, WeatherCard]
 })
 class WeatherApp {
-  url: string;
+  baseUrl: string;
   weatherList: HourlyForecast[];
   cityName: string;
 
   constructor() {
-    this.url = 'http://api.openweathermap.org/data/2.5/forecast?lat=40.7409570&lon=-74.0021190';
-    this.getWeather();
+    this.baseUrl = 'http://api.openweathermap.org/data/2.5/forecast?q=';
+    this.getWeather('New York');
   }
 
   cityChanged(currentCity: string) {
-    debugger;
-    console.log('hola');
+    this.getWeather(currentCity);
   }
 
   format(temperature: number): string {
@@ -154,7 +153,7 @@ class WeatherApp {
     return this.format(fahrenheit);
   }
 
-  getWeather() {
+  getWeather(currentCity: string) {
     var self = this;
     var request = new XMLHttpRequest();
 
@@ -162,7 +161,7 @@ class WeatherApp {
       var weatherData = JSON.parse(request.responseText);
       self.handleResponse(weatherData);
     };
-    request.open('GET', this.url, true);
+    request.open('GET', this.baseUrl + currentCity, true);
     request.send(null);
   }
 

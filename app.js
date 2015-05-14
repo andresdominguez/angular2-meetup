@@ -75,12 +75,11 @@ var DateAndTime = (function () {
 })();
 var WeatherApp = (function () {
     function WeatherApp() {
-        this.url = 'http://api.openweathermap.org/data/2.5/forecast?lat=40.7409570&lon=-74.0021190';
-        this.getWeather();
+        this.baseUrl = 'http://api.openweathermap.org/data/2.5/forecast?q=';
+        this.getWeather('New York');
     }
     WeatherApp.prototype.cityChanged = function (currentCity) {
-        debugger;
-        console.log('hola');
+        this.getWeather(currentCity);
     };
     WeatherApp.prototype.format = function (temperature) {
         var stringValue = '' + temperature;
@@ -98,14 +97,14 @@ var WeatherApp = (function () {
         var fahrenheit = (parseFloat(celsius) * 1.8) + 32.0;
         return this.format(fahrenheit);
     };
-    WeatherApp.prototype.getWeather = function () {
+    WeatherApp.prototype.getWeather = function (currentCity) {
         var self = this;
         var request = new XMLHttpRequest();
         request.onload = function handleResponse(response) {
             var weatherData = JSON.parse(request.responseText);
             self.handleResponse(weatherData);
         };
-        request.open('GET', this.url, true);
+        request.open('GET', this.baseUrl + currentCity, true);
         request.send(null);
     };
     WeatherApp.prototype.handleResponse = function (weatherData) {
