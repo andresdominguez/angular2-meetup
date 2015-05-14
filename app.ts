@@ -15,7 +15,7 @@ interface HourlyForecast {
 @View({
   template: `
     <div class="city-selector">
-      Choose a city: {{currentCity}}
+      <div class="city-selector-label">Choose a city: {{currentCity}}</div>
       <select name="city" id="city" class="form-control"
           (change)="cityChanged($event)">
         <option *for="var city of cities"
@@ -57,7 +57,7 @@ class CitySelector {
 })
 @View({
   template: `
-    <div>
+    <div class="weather-card">
       <div>{{hourly.day}} {{hourly.time}}</div>
       <div>
         <i class="wi" [class.wi-day-cloudy]="isCloudy()"
@@ -103,24 +103,26 @@ class DateAndTime {
 })
 @View({
   template: `
-    <div class="row">
-      <div> {{cityName}} </div>
-      <city-selector (cityselected)="cityChanged()"></city-selector>
-      <div *for="var item of weatherList">
-        <weather-card [hourly]="item"></weather-card>
+    <div class="weather-app">
+      <div>
+        <div class="weather-app-city">{{cityName}}</div>
+        <city-selector (cityselected)="cityChanged()"></city-selector>
+      </div>
+      <div class="row">
+        <div *for="var item of weatherList" class="col-xs-4">
+          <weather-card [hourly]="item"></weather-card>
+        </div>
       </div>
     </div>
   `,
   directives: [CitySelector, For, WeatherCard]
 })
 class WeatherApp {
-  hello: string;
   url: string;
   weatherList: HourlyForecast[];
   cityName: string;
 
   constructor() {
-    this.hello = '34ddd5';
     this.url = 'http://api.openweathermap.org/data/2.5/forecast?lat=35&lon=139';
     this.getWeather();
   }
