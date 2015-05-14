@@ -110,7 +110,7 @@ class DateAndTime {
             (cityselected)="cityChanged(city.currentCity)"></city-selector>
       </div>
       <div class="row">
-        <div *for="var item of weatherList" class="col-xs-4">
+        <div *for="var item of forecastList" class="col-xs-4">
           <weather-card [forecast]="item"></weather-card>
         </div>
       </div>
@@ -120,7 +120,7 @@ class DateAndTime {
 })
 class WeatherApp {
   baseUrl: string;
-  weatherList: HourlyForecast[];
+  forecastList: HourlyForecast[];
   cityName: string;
 
   constructor() {
@@ -168,7 +168,7 @@ class WeatherApp {
   handleResponse(weatherData: any) {
     this.cityName = weatherData.city.name;
 
-    this.weatherList = weatherData.list.map(item => {
+    this.forecastList = weatherData.list.map(item => {
       var c = this.toCelsius(item.main.temp);
       var dateAndTime = new DateAndTime(item.dt_txt);
 

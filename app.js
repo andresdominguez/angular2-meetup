@@ -42,23 +42,23 @@ var CitySelector = (function () {
 })();
 var WeatherCard = (function () {
     function WeatherCard() {
-        this.hourly = null;
+        this.forecast = null;
     }
     WeatherCard.prototype.isCloudy = function () {
-        return this.hourly.clouds > 30;
+        return this.forecast.clouds > 30;
     };
     WeatherCard.prototype.isSunny = function () {
-        return this.hourly.clouds <= 30;
+        return this.forecast.clouds <= 30;
     };
     WeatherCard = __decorate([
         angular2_1.Component({
             selector: 'weather-card',
             properties: {
-                hourly: 'hourly'
+                forecast: 'forecast'
             }
         }),
         angular2_1.View({
-            template: "\n    <div class=\"weather-card\">\n      <div>{{hourly.day}} {{hourly.time}}</div>\n      <div>\n        <i class=\"wi\" [class.wi-day-cloudy]=\"isCloudy()\"\n            [class.wi-day-sunny]=\"isSunny()\">\n          {{hourly.c}}C / {{hourly.f}}F\n        </i>\n      </div>\n    </div>\n  "
+            template: "\n    <div class=\"weather-card\">\n      <div>{{forecast.day}} {{forecast.time}}</div>\n      <div>\n        <i class=\"wi\" [class.wi-day-cloudy]=\"isCloudy()\"\n            [class.wi-day-sunny]=\"isSunny()\">\n          {{forecast.c}}C / {{forecast.f}}F\n        </i>\n      </div>\n    </div>\n  "
         }), 
         __metadata('design:paramtypes', [])
     ], WeatherCard);
@@ -110,7 +110,7 @@ var WeatherApp = (function () {
     WeatherApp.prototype.handleResponse = function (weatherData) {
         var _this = this;
         this.cityName = weatherData.city.name;
-        this.weatherList = weatherData.list.map(function (item) {
+        this.forecastList = weatherData.list.map(function (item) {
             var c = _this.toCelsius(item.main.temp);
             var dateAndTime = new DateAndTime(item.dt_txt);
             return {
@@ -127,7 +127,7 @@ var WeatherApp = (function () {
             selector: 'weather-app'
         }),
         angular2_1.View({
-            template: "\n    <div class=\"weather-app\">\n      <div>\n        <div class=\"weather-app-city\">{{cityName}}</div>\n        <city-selector #city\n            (cityselected)=\"cityChanged(city.currentCity)\"></city-selector>\n      </div>\n      <div class=\"row\">\n        <div *for=\"var item of weatherList\" class=\"col-xs-4\">\n          <weather-card [hourly]=\"item\"></weather-card>\n        </div>\n      </div>\n    </div>\n  ",
+            template: "\n    <div class=\"weather-app\">\n      <div>\n        <div class=\"weather-app-city\">{{cityName}}</div>\n        <city-selector #city\n            (cityselected)=\"cityChanged(city.currentCity)\"></city-selector>\n      </div>\n      <div class=\"row\">\n        <div *for=\"var item of forecastList\" class=\"col-xs-4\">\n          <weather-card [forecast]=\"item\"></weather-card>\n        </div>\n      </div>\n    </div>\n  ",
             directives: [CitySelector, angular2_1.For, WeatherCard]
         }), 
         __metadata('design:paramtypes', [])
