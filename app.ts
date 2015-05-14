@@ -4,7 +4,8 @@ interface HourlyForecast {
   c: string,
   f: string,
   time: string,
-  day: string
+  day: string,
+  clouds: number
 }
 
 @Component({
@@ -57,9 +58,13 @@ class CitySelector {
 @View({
   template: `
     <div>
-      <div>C: hourly.c</div>
-      <div>F: hourly.f</div>
       <div>{{hourly.day}} {{hourly.time}}</div>
+      <div>
+        <i class="wi" [class.wi-day-cloudy]="isCloudy()"
+            [class.wi-day-sunny]="isSunny()">
+          {{hourly.c}}C / {{hourly.f}}F
+        </i>
+      </div>
     </div>
   `
 })
@@ -67,6 +72,15 @@ class WeatherCard {
   hourly: HourlyForecast;
 
   constructor() {
+    this.hourly = null;
+  }
+
+  isCloudy(): boolean {
+    return this.hourly.clouds > 30;
+  }
+
+  isSunny(): boolean {
+    return this.hourly.clouds <= 30;
   }
 }
 
@@ -159,7 +173,8 @@ class WeatherApp {
         c: c,
         f: this.toFahrenheit(c),
         day: dateAndTime.day,
-        time: dateAndTime.localTime
+        time: dateAndTime.localTime,
+        clouds: parseInt(item.clouds.all, 10)
       };
     });
   }

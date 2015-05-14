@@ -42,7 +42,14 @@ var CitySelector = (function () {
 })();
 var WeatherCard = (function () {
     function WeatherCard() {
+        this.hourly = null;
     }
+    WeatherCard.prototype.isCloudy = function () {
+        return this.hourly.clouds > 30;
+    };
+    WeatherCard.prototype.isSunny = function () {
+        return this.hourly.clouds <= 30;
+    };
     WeatherCard = __decorate([
         angular2_1.Component({
             selector: 'weather-card',
@@ -51,7 +58,7 @@ var WeatherCard = (function () {
             }
         }),
         angular2_1.View({
-            template: "\n    <div>\n      <div>C: hourly.c</div>\n      <div>F: hourly.f</div>\n      <div>{{hourly.day}} {{hourly.time}}</div>\n    </div>\n  "
+            template: "\n    <div>\n      <div>{{hourly.day}} {{hourly.time}}</div>\n      <div>\n        <i class=\"wi\" [class.wi-day-cloudy]=\"isCloudy()\"\n            [class.wi-day-sunny]=\"isSunny()\">\n          {{hourly.c}}C / {{hourly.f}}F\n        </i>\n      </div>\n    </div>\n  "
         }), 
         __metadata('design:paramtypes', [])
     ], WeatherCard);
@@ -111,7 +118,8 @@ var WeatherApp = (function () {
                 c: c,
                 f: _this.toFahrenheit(c),
                 day: dateAndTime.day,
-                time: dateAndTime.localTime
+                time: dateAndTime.localTime,
+                clouds: parseInt(item.clouds.all, 10)
             };
         });
     };
