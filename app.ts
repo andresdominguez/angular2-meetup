@@ -1,4 +1,5 @@
-import {Component, EventEmitter, For, If, View, bootstrap} from 'angular2/angular2';
+/// <reference path="typings/angular2/angular2.d.ts" />
+import {Component, EventEmitter, NgFor, NgIf, View, bootstrap} from 'angular2/angular2';
 
 interface HourlyForecast {
   c: string;
@@ -18,12 +19,12 @@ interface HourlyForecast {
       <div class="city-selector-label">Choose a city: {{currentCity}}</div>
       <select name="city" id="city" class="form-control"
           (change)="cityChanged($event)">
-        <option *for="var city of cities"
+        <option *ng-for="#city of cities"
             [selected]="city == currentCity">{{city}}</option>
       </select>
     </div>
   `,
-  directives: [For]
+  directives: [NgFor]
 })
 class CitySelector {
   cities: string[];
@@ -51,9 +52,7 @@ class CitySelector {
 
 @Component({
   selector: 'weather-card',
-  properties: {
-    forecast: 'forecast'
-  }
+  properties: ['forecast']
 })
 @View({
   template: `
@@ -110,13 +109,13 @@ class DateAndTime {
             (cityselected)="cityChanged(city.currentCity)"></city-selector>
       </div>
       <div class="row">
-        <div *for="var item of forecastList" class="col-xs-4">
+        <div *ng-for="#item of forecastList" class="col-xs-4">
           <weather-card [forecast]="item"></weather-card>
         </div>
       </div>
     </div>
   `,
-  directives: [CitySelector, For, WeatherCard]
+  directives: [CitySelector, NgFor, WeatherCard]
 })
 class WeatherApp {
   baseUrl: string;
@@ -183,4 +182,7 @@ class WeatherApp {
   }
 }
 
-bootstrap(WeatherApp);
+bootstrap(WeatherApp).then(
+    success => console.log('success', success),
+    failure => console.log('failure', failure)
+);

@@ -9,6 +9,7 @@ if (typeof __decorate !== "function") __decorate = function (decorators, target,
 if (typeof __metadata !== "function") __metadata = function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+/// <reference path="typings/angular2/angular2.d.ts" />
 var angular2_1 = require('angular2/angular2');
 var CitySelector = (function () {
     function CitySelector() {
@@ -33,8 +34,8 @@ var CitySelector = (function () {
             events: ['cityselected']
         }),
         angular2_1.View({
-            template: "\n    <div class=\"city-selector\">\n      <div class=\"city-selector-label\">Choose a city: {{currentCity}}</div>\n      <select name=\"city\" id=\"city\" class=\"form-control\"\n          (change)=\"cityChanged($event)\">\n        <option *for=\"var city of cities\"\n            [selected]=\"city == currentCity\">{{city}}</option>\n      </select>\n    </div>\n  ",
-            directives: [angular2_1.For]
+            template: "\n    <div class=\"city-selector\">\n      <div class=\"city-selector-label\">Choose a city: {{currentCity}}</div>\n      <select name=\"city\" id=\"city\" class=\"form-control\"\n          (change)=\"cityChanged($event)\">\n        <option *ng-for=\"#city of cities\"\n            [selected]=\"city == currentCity\">{{city}}</option>\n      </select>\n    </div>\n  ",
+            directives: [angular2_1.NgFor]
         }), 
         __metadata('design:paramtypes', [])
     ], CitySelector);
@@ -53,9 +54,7 @@ var WeatherCard = (function () {
     WeatherCard = __decorate([
         angular2_1.Component({
             selector: 'weather-card',
-            properties: {
-                forecast: 'forecast'
-            }
+            properties: ['forecast']
         }),
         angular2_1.View({
             template: "\n    <div class=\"weather-card\">\n      <div>{{forecast.day}} {{forecast.time}}</div>\n      <div>\n        <i class=\"wi\" [class.wi-day-cloudy]=\"isCloudy()\"\n            [class.wi-day-sunny]=\"isSunny()\">\n          {{forecast.c}}C / {{forecast.f}}F\n        </i>\n      </div>\n    </div>\n  "
@@ -127,11 +126,11 @@ var WeatherApp = (function () {
             selector: 'weather-app'
         }),
         angular2_1.View({
-            template: "\n    <div class=\"weather-app\">\n      <div>\n        <div class=\"weather-app-city\">{{cityName}}</div>\n        <city-selector #city\n            (cityselected)=\"cityChanged(city.currentCity)\"></city-selector>\n      </div>\n      <div class=\"row\">\n        <div *for=\"var item of forecastList\" class=\"col-xs-4\">\n          <weather-card [forecast]=\"item\"></weather-card>\n        </div>\n      </div>\n    </div>\n  ",
-            directives: [CitySelector, angular2_1.For, WeatherCard]
+            template: "\n    <div class=\"weather-app\">\n      <div>\n        <div class=\"weather-app-city\">{{cityName}}</div>\n        <city-selector #city\n            (cityselected)=\"cityChanged(city.currentCity)\"></city-selector>\n      </div>\n      <div class=\"row\">\n        <div *ng-for=\"#item of forecastList\" class=\"col-xs-4\">\n          <weather-card [forecast]=\"item\"></weather-card>\n        </div>\n      </div>\n    </div>\n  ",
+            directives: [CitySelector, angular2_1.NgFor, WeatherCard]
         }), 
         __metadata('design:paramtypes', [])
     ], WeatherApp);
     return WeatherApp;
 })();
-angular2_1.bootstrap(WeatherApp);
+angular2_1.bootstrap(WeatherApp).then(function (success) { return console.log('success', success); }, function (failure) { return console.log('failure', failure); });
