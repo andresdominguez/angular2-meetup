@@ -11,6 +11,7 @@ if (typeof __metadata !== "function") __metadata = function (k, v) {
 };
 /// <reference path="typings/angular2/angular2.d.ts" />
 var angular2_1 = require('angular2/angular2');
+var http_1 = require("angular2/http");
 var CitySelector = (function () {
     function CitySelector() {
         this.cities = [
@@ -73,7 +74,8 @@ var DateAndTime = (function () {
     return DateAndTime;
 })();
 var WeatherApp = (function () {
-    function WeatherApp() {
+    function WeatherApp(http) {
+        this.http = http;
         this.baseUrl = 'http://api.openweathermap.org/data/2.5/forecast?q=';
         this.getWeather('New York');
     }
@@ -97,14 +99,10 @@ var WeatherApp = (function () {
         return this.format(fahrenheit);
     };
     WeatherApp.prototype.getWeather = function (currentCity) {
-        var self = this;
-        var request = new XMLHttpRequest();
-        request.onload = function handleResponse(response) {
-            var weatherData = JSON.parse(request.responseText);
-            self.handleResponse(weatherData);
-        };
-        request.open('GET', this.baseUrl + currentCity, true);
-        request.send(null);
+        var _this = this;
+        this.http.get(this.baseUrl + currentCity)
+            .map(function (response) { return response.json(); })
+            .subscribe(function (response) { return _this.handleResponse(response); });
     };
     WeatherApp.prototype.handleResponse = function (weatherData) {
         var _this = this;
@@ -129,8 +127,8 @@ var WeatherApp = (function () {
             template: "\n    <div class=\"weather-app\">\n      <div>\n        <div class=\"weather-app-city\">{{cityName}}</div>\n        <city-selector #city\n            (cityselected)=\"cityChanged(city.currentCity)\"></city-selector>\n      </div>\n      <div class=\"row\">\n        <div *ng-for=\"#item of forecastList\" class=\"col-xs-4\">\n          <weather-card [forecast]=\"item\"></weather-card>\n        </div>\n      </div>\n    </div>\n  ",
             directives: [CitySelector, angular2_1.NgFor, WeatherCard]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [http_1.Http])
     ], WeatherApp);
     return WeatherApp;
 })();
-angular2_1.bootstrap(WeatherApp).then(function (success) { return console.log('success', success); }, function (failure) { return console.log('failure', failure); });
+angular2_1.bootstrap(WeatherApp, [http_1.httpInjectables]);

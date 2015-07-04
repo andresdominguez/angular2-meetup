@@ -1,5 +1,6 @@
 /// <reference path="typings/angular2/angular2.d.ts" />
-import {Component, EventEmitter, NgFor, NgIf, View, bootstrap} from 'angular2/angular2';
+import {Component, EventEmitter, NgFor, View, bootstrap} from 'angular2/angular2';
+import {Http, httpInjectables} from "angular2/http";
 
 interface HourlyForecast {
   c: string;
@@ -121,8 +122,10 @@ class WeatherApp {
   baseUrl: string;
   forecastList: HourlyForecast[];
   cityName: string;
+  http: Http;
 
-  constructor() {
+  constructor(http: Http) {
+    this.http = http;
     this.baseUrl = 'http://api.openweathermap.org/data/2.5/forecast?q=';
     this.getWeather('New York');
   }
@@ -153,15 +156,9 @@ class WeatherApp {
   }
 
   getWeather(currentCity: string) {
-    var self = this;
-    var request = new XMLHttpRequest();
-
-    request.onload = function handleResponse(response) {
-      var weatherData = JSON.parse(request.responseText);
-      self.handleResponse(weatherData);
-    };
-    request.open('GET', this.baseUrl + currentCity, true);
-    request.send(null);
+    this.http.get(this.baseUrl + currentCity)
+        .map(response => response.json())
+        .subscribe(response => this.handleResponse(response));
   }
 
   handleResponse(weatherData: any) {
@@ -182,7 +179,4 @@ class WeatherApp {
   }
 }
 
-bootstrap(WeatherApp).then(
-    success => console.log('success', success),
-    failure => console.log('failure', failure)
-);
+bootstrap(WeatherApp, [httpInjectables]);
