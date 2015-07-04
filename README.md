@@ -26,6 +26,7 @@ $ git clone https://github.com/andresdominguez/angular2-meetup.git
 
 ```shell
 $ cd angular2-meetup
+$ npm install -g tsd@^0.6.0
 $ tsc -w
 message TS6042: Compilation complete. Watching for file changes.
 ```
